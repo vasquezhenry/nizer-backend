@@ -1,9 +1,12 @@
-import {Router} from "express"
+import { Router } from "express";
+import budgets from "./modules/budgets";
+import {Application} from "express"
 
-import budgets from "./modules/budgets"
+export default (app:Application) => {
+  const router = Router();
 
-const router = Router();
+  budgets(router);
 
-budgets(router);
-
-export default router;
+  app.use("/api",router)
+  return app;
+};
