@@ -11,6 +11,7 @@ export default (r: express.Router) => {
   r.get("/budgets", (req, res) => handler.get(req, res));
   r.get("/budgets/:id", (req, res) => handler.getOne(req, res));
   r.post("/budgets",(req,res) => handler.post(req, res))
+  r.delete("/budgets/:id", (req,res) => handler.delete(req,res))
 
   return r;
 };
