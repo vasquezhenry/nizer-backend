@@ -24,7 +24,7 @@ export default class AccountRepo {
           name: account.name,
           linked: account.linked,
           balance: account.balance
-        })
+        },"*")
         .into("account");
 
       return newAccount[0];

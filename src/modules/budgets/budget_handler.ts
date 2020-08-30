@@ -14,18 +14,20 @@ export default class BudgetHandler {
       const accounts = await this.accountRepo.findByBudgetId(id);
       return res.status(200).json(accounts);
     } catch (err) {
-      return res.status(400).json("Cannot get accounts")
+      return res.status(400).json("Cannot get accounts");
     }
   }
 
-  async postAccount(req:Request,res:Response){
-    try{
-      const id = req.params.id;
+  async postAccount(req: Request, res: Response) {
+    try {
+      const id = req.params.id
       const account = req.body;
 
-      const newAccount = await this.accountRepo;
-    }catch(err){
-      return res.status(400).json("Cannot post account")
+      const newAccount = await this.accountRepo.insert(id, account);
+      return res.status(200).json(newAccount);
+    } catch (err) {
+      console.log(err)
+      return res.status(400).json("Cannot post account");
     }
   }
 
