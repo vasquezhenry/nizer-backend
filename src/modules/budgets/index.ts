@@ -3,12 +3,18 @@ import db from "../../db";
 import BudgetRepo from "./budget_repo";
 import BudgetHandler from "./budget_handler";
 import AccountRepo from "../accounts/account_repo";
+import CategoryRepo from "../categories/category_repo";
 
 export default (r: express.Router) => {
   const budgetRepo = new BudgetRepo(db);
   const accountRepo = new AccountRepo(db);
+  const categoryRepo = new CategoryRepo(db);
 
-  const handler = new BudgetHandler(budgetRepo, accountRepo);
+  const handler = new BudgetHandler(
+    budgetRepo,
+    accountRepo,
+    categoryRepo,
+  );
 
   r.get("/budgets", (req, res) => handler.get(req, res));
   r.get("/budgets/:id", (req, res) => handler.getOne(req, res));
@@ -18,6 +24,13 @@ export default (r: express.Router) => {
 
   r.get("/budgets/:id/accounts", (req, res) => handler.getAccounts(req, res));
   r.post("/budgets/:id/accounts", (req, res) => handler.postAccount(req, res));
+
+  r.get("/budgets/:budgetId/categories", (req, res) =>
+    handler.getCategories(req, res)
+  );
+  r.post("/budgets/:budgetId/categories", (req, res) =>
+    handler.postCategory(req, res)
+  );
 
   return r;
 };

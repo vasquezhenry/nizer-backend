@@ -1,12 +1,36 @@
 import { Request, Response } from "express";
 import AccountRepo from "../accounts/account_repo";
+import CategoryRepo from "../categories/category_repo";
 import BudgetRepo from "./budget_repo";
 
 export default class BudgetHandler {
   constructor(
     private budgetRepo: BudgetRepo,
-    private accountRepo: AccountRepo
+    private accountRepo: AccountRepo,
+    private categoryRepo: CategoryRepo,
   ) {}
+
+  async postCategory(req: Request, res: Response) {
+    try {
+      const id = req.params.budgetId;
+      const category = req.body;
+      const newCategory = await this.categoryRepo.insert(id, category);
+      return res.status(200).json(newCategory);
+    } catch (err) {
+      return res.status(400).json("Cannot post category");
+    }
+  }
+
+  async getCategories(req: Request, res: Response) {
+    try {
+      const id = req.params.budgetId;
+      const categories = await this.categoryRepo.findByBudgetId(id);
+
+      return res.status(200).json(categories);
+    } catch (err) {
+      return res.status(400).json("Cannot get categories");
+    }
+  }
 
   async getAccounts(req: Request, res: Response) {
     try {
@@ -20,13 +44,13 @@ export default class BudgetHandler {
 
   async postAccount(req: Request, res: Response) {
     try {
-      const id = req.params.id
+      const id = req.params.id;
       const account = req.body;
 
       const newAccount = await this.accountRepo.insert(id, account);
       return res.status(200).json(newAccount);
     } catch (err) {
-      console.log(err)
+      console.log(err);
       return res.status(400).json("Cannot post account");
     }
   }

@@ -19,12 +19,15 @@ export default class AccountRepo {
   async insert(budgetId: string, account: Partial<Account>) {
     try {
       const newAccount = await this.db
-        .insert({
-          budgetId,
-          name: account.name,
-          linked: account.linked,
-          balance: account.balance
-        },"*")
+        .insert(
+          {
+            budgetId,
+            name: account.name,
+            linked: account.linked,
+            balance: account.balance
+          },
+          "*"
+        )
         .into("account");
 
       return newAccount[0];
@@ -35,10 +38,12 @@ export default class AccountRepo {
 
   async update(id: string, account: Partial<Account>) {
     try {
-      await this.db
-        .update({ name: account.name, balance: account.balance })
+      const updated = await this.db
+        .update({ name: account.name, balance: account.balance }, "*")
         .where("id", id)
         .from("account");
+
+      return updated;
     } catch (err) {
       throw err;
     }
