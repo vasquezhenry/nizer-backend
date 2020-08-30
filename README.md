@@ -1,4 +1,6 @@
 # nizer-backend
+> Financial independence app made easy.
+
 ## Development setup
 
 Development setup should be a simple: 
