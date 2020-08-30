@@ -1,7 +1,7 @@
 import knex from "knex";
 import Budget from "./budget";
 
-export default class BudgetService {
+export default class BudgetRepo {
   constructor(private db: knex) {}
 
   async remove(id: string) {
@@ -9,7 +9,18 @@ export default class BudgetService {
       await this.db
         .delete()
         .where("id", id)
-        .from("Budget");
+        .from("budget");
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async update(id: string, budget: Partial<Budget>) {
+    try {
+      await this.db
+        .update({ name: budget.name, currency: budget.currency })
+        .where("id", id)
+        .from("budget");
     } catch (err) {
       throw err;
     }
@@ -20,7 +31,7 @@ export default class BudgetService {
    */
   async find(): Promise<Budget[]> {
     try {
-      const budgets = await this.db.select("*").from("Budget");
+      const budgets = await this.db.select("*").from("budget");
       return budgets;
     } catch (err) {
       console.log(err);
@@ -36,7 +47,7 @@ export default class BudgetService {
       const budget = await this.db
         .select("*")
         .first()
-        .from("Budget")
+        .from("budget")
         .where("id", id);
       return budget;
     } catch (err) {
@@ -49,7 +60,7 @@ export default class BudgetService {
     try {
       const budgets = await this.db
         .select("*")
-        .from("Budget")
+        .from("budget")
         .where("userId", userId);
       return budgets;
     } catch (err) {
@@ -62,7 +73,7 @@ export default class BudgetService {
    */
   async insert(budget: Partial<Budget>): Promise<any> {
     try {
-      const newBudget = await this.db<Budget>("Budget").insert(budget, "*");
+      const newBudget = await this.db<Budget>("budget").insert(budget, "*");
       return newBudget[0];
     } catch (err) {
       throw err;

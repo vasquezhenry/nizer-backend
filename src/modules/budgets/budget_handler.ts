@@ -1,13 +1,49 @@
 import { Request, Response } from "express";
-import BudgetService from "./budget_service";
+import AccountRepo from "../accounts/account_repo";
+import BudgetRepo from "./budget_repo";
 
 export default class BudgetHandler {
-  constructor(private service: BudgetService) {}
+  constructor(
+    private budgetRepo: BudgetRepo,
+    private accountRepo: AccountRepo
+  ) {}
+
+  async getAccounts(req: Request, res: Response) {
+    try {
+      const id = req.params.id;
+      const accounts = await this.accountRepo.findByBudgetId(id);
+      return res.status(200).json(accounts);
+    } catch (err) {
+      return res.status(400).json("Cannot get accounts")
+    }
+  }
+
+  async postAccount(req:Request,res:Response){
+    try{
+      const id = req.params.id;
+      const account = req.body;
+
+      const newAccount = await this.accountRepo;
+    }catch(err){
+      return res.status(400).json("Cannot post account")
+    }
+  }
+
+  async put(req: Request, res: Response) {
+    try {
+      const budget = req.body;
+      const id = req.params.id;
+      const updated = await this.budgetRepo.update(id, budget);
+      return res.status(200).json(updated);
+    } catch (err) {
+      return res.status(400).json("Cannot put budget");
+    }
+  }
 
   async post(req: Request, res: Response) {
     try {
       const budget = req.body;
-      const id = await this.service.insert(budget);
+      const id = await this.budgetRepo.insert(budget);
       return res.status(200).json(id);
     } catch (err) {
       console.log(err);
@@ -18,12 +54,12 @@ export default class BudgetHandler {
   async get(req: Request, res: Response) {
     try {
       const userId = req.query.userId as string;
-      if(userId){
-        const budgets = await this.service.findByUserId(userId)
+      if (userId) {
+        const budgets = await this.budgetRepo.findByUserId(userId);
         return res.status(200).json(budgets);
       }
 
-      const budgets = await this.service.find();
+      const budgets = await this.budgetRepo.find();
       return res.status(200).json(budgets);
     } catch (err) {
       console.log(err);
@@ -34,7 +70,7 @@ export default class BudgetHandler {
   async getOne(req: Request, res: Response) {
     try {
       const id = req.params.id;
-      const budget = await this.service.findOne(id);
+      const budget = await this.budgetRepo.findOne(id);
       return res.status(200).json(budget);
     } catch (err) {
       console.log(err);
@@ -45,11 +81,11 @@ export default class BudgetHandler {
   async delete(req: Request, res: Response) {
     try {
       const id = req.params.id;
-      const budget = await this.service.remove(id);
+      const budget = await this.budgetRepo.remove(id);
       return res.status(200).json(budget);
     } catch (err) {
-      console.log(err)
-      return res.status(400).json("Could not delete budget")
+      console.log(err);
+      return res.status(400).json("Could not delete budget");
     }
   }
 }
