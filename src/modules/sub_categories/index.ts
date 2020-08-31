@@ -13,15 +13,17 @@ export default (r: express.Router) => {
     transactionRepo
   );
 
-  r.get("/sub-categories/:subCategoryId", (req, res) =>
+  r.post("/sub-categories", (req, res) => subCategoryHandler.post(req, res));
+
+  r.get("/sub-categories/:id", (req, res) =>
     subCategoryHandler.getTransactions(req, res)
   );
 
-  r.patch("/sub-categories/:subCategoryId", (req, res) =>
+  r.patch("/sub-categories/:id", (req, res) =>
     subCategoryHandler.patch(req, res)
   );
 
-  r.delete("/sub-categories/:subCategoryId", (req, res) =>
+  r.delete("/sub-categories/:id", (req, res) =>
     subCategoryHandler.delete(req, res)
   );
 

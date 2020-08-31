@@ -7,23 +7,12 @@ export default class BudgetHandler {
   constructor(
     private budgetRepo: BudgetRepo,
     private accountRepo: AccountRepo,
-    private categoryRepo: CategoryRepo,
+    private categoryRepo: CategoryRepo
   ) {}
-
-  async postCategory(req: Request, res: Response) {
-    try {
-      const id = req.params.budgetId;
-      const category = req.body;
-      const newCategory = await this.categoryRepo.insert(id, category);
-      return res.status(200).json(newCategory);
-    } catch (err) {
-      return res.status(400).json("Cannot post category");
-    }
-  }
 
   async getCategories(req: Request, res: Response) {
     try {
-      const id = req.params.budgetId;
+      const id = req.params.id;
       const categories = await this.categoryRepo.findByBudgetId(id);
 
       return res.status(200).json(categories);
@@ -39,19 +28,6 @@ export default class BudgetHandler {
       return res.status(200).json(accounts);
     } catch (err) {
       return res.status(400).json("Cannot get accounts");
-    }
-  }
-
-  async postAccount(req: Request, res: Response) {
-    try {
-      const id = req.params.id;
-      const account = req.body;
-
-      const newAccount = await this.accountRepo.insert(id, account);
-      return res.status(200).json(newAccount);
-    } catch (err) {
-      console.log(err);
-      return res.status(400).json("Cannot post account");
     }
   }
 

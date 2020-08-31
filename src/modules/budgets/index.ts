@@ -23,14 +23,11 @@ export default (r: express.Router) => {
   r.put("/budgets/:id", (req, res) => handler.put(req, res));
 
   r.get("/budgets/:id/accounts", (req, res) => handler.getAccounts(req, res));
-  r.post("/budgets/:id/accounts", (req, res) => handler.postAccount(req, res));
 
-  r.get("/budgets/:budgetId/categories", (req, res) =>
+  r.get("/budgets/:id/categories", (req, res) =>
     handler.getCategories(req, res)
   );
-  r.post("/budgets/:budgetId/categories", (req, res) =>
-    handler.postCategory(req, res)
-  );
+
 
   return r;
 };

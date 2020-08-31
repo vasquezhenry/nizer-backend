@@ -7,11 +7,13 @@ export default (r: express.Router) => {
   const transactionRepo = new TransactionRepo(db);
   const transactionHandler = new TransactionHandler(transactionRepo);
 
-  r.patch("/transactions/:transactionId", (req, res) =>
+  r.post("/transactions", (req, res) => transactionHandler.post(req, res));
+
+  r.patch("/transactions/:id", (req, res) =>
     transactionHandler.patch(req, res)
   );
 
-  r.delete("/transactions/:transactionId", (req, res) =>
+  r.delete("/transactions/:id", (req, res) =>
     transactionHandler.delete(req, res)
   );
 

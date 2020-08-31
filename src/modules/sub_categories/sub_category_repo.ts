@@ -49,19 +49,10 @@ export default class SubCategoryRepo {
     }
   }
 
-  async insert(categoryId: string, subCategory: Partial<SubCategory>) {
+  async insert(subCategory: Partial<SubCategory>) {
     try {
       const newSubCategory = await this.db
-        .insert(
-          {
-            categoryId: categoryId,
-            name: subCategory.name,
-            spent: subCategory.spent,
-            available: subCategory.available,
-            budgeted: subCategory.budgeted
-          },
-          "*"
-        )
+        .insert(subCategory, "*")
         .into("sub-category");
 
       return newSubCategory[0];

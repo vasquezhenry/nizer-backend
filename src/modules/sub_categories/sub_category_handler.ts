@@ -8,9 +8,19 @@ export default class SubCategoryHandler {
     private transactionsRepo: TransactionRepo
   ) {}
 
+  async post(req: Request, res: Response) {
+    try {
+      const subCategory = req.body;
+      const added = await this.subCategoryRepo.insert(subCategory);
+      return res.status(200).json(added);
+    } catch (err) {
+      return res.status(400).json("could not post sub category");
+    }
+  }
+
   async getTransactions(req: Request, res: Response) {
     try {
-      const subCategoryId = req.params.subCategoryId;
+      const subCategoryId = req.params.id;
       const transactions = await this.transactionsRepo.findBySubCategoryId(
         subCategoryId
       );
@@ -22,7 +32,7 @@ export default class SubCategoryHandler {
 
   async patch(req: Request, res: Response) {
     try {
-      const subCategoryId = req.params.subCategoryId;
+      const subCategoryId = req.params.id;
       const subCategory = req.body;
 
       const updated = await this.subCategoryRepo.update(
@@ -38,7 +48,7 @@ export default class SubCategoryHandler {
 
   async delete(req: Request, res: Response) {
     try {
-      const subCategoryId = req.params.subCategoryId;
+      const subCategoryId = req.params.id;
       const deleted = await this.subCategoryRepo.remove(subCategoryId);
       return res.status(200).json(deleted);
     } catch (err) {

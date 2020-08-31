@@ -16,20 +16,9 @@ export default class AccountRepo {
     }
   }
 
-  async insert(budgetId: string, account: Partial<Account>) {
+  async insert(account: Partial<Account>) {
     try {
-      const newAccount = await this.db
-        .insert(
-          {
-            budgetId,
-            name: account.name,
-            linked: account.linked,
-            balance: account.balance
-          },
-          "*"
-        )
-        .into("account");
-
+      const newAccount = await this.db.insert(account, "*").into("account");
       return newAccount[0];
     } catch (err) {
       throw err;

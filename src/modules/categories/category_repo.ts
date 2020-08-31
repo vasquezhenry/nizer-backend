@@ -42,17 +42,9 @@ export default class CategoryRepo {
     }
   }
 
-  async insert(budgetId: string, category: Partial<Category>) {
+  async insert(category: Partial<Category>) {
     try {
-      const newCategory = await this.db
-        .insert(
-          {
-            budgetId,
-            name: category.name
-          },
-          "*"
-        )
-        .into("category");
+      const newCategory = await this.db.insert(category, "*").into("category");
       return newCategory[0];
     } catch (err) {
       throw err;

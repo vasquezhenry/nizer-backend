@@ -9,7 +9,9 @@ export default (r: express.Router) => {
   const transactionRepo = new TransactionRepo(db);
   const accountHandler = new AccountHandler(accountRepo, transactionRepo);
 
-  r.get("/accounts/:accountId", (req, res) =>
+  r.post("/accounts", (req, res) => accountHandler.post(req, res));
+
+  r.get("/accounts/:id/transactions", (req, res) =>
     accountHandler.getTransactions(req, res)
   );
   r.patch("/accounts/:id", (req, res) => accountHandler.patch(req, res));

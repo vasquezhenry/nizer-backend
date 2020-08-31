@@ -8,14 +8,24 @@ export default class AccountHandler {
     private transactionRepo: TransactionRepo
   ) {}
 
+  async post(req: Request, res: Response) {
+    try {
+      const transaction = req.body;
+      return res.status(200).json(transaction);
+    } catch (err) {
+      return res.status(400).json("Could not post transaction");
+    }
+  }
+
   async getTransactions(req: Request, res: Response) {
     try {
-      const accountId = req.params.accountId;
+      const accountId = req.params.id;
       const transactions = await this.transactionRepo.findByAccountId(
         accountId
       );
       return res.status(200).json(transactions);
     } catch (err) {
+      console.log(err);
       return res.status(400).json("Could not get transactions");
     }
   }
