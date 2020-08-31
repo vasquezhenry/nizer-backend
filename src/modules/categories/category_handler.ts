@@ -18,7 +18,7 @@ export default class CategoryHandler {
   async delete(req: Request, res: Response) {
     try {
       const id = req.params.id;
-      const deleted = this.categoryRepo.delete(id);
+      const deleted = this.categoryRepo.remove(id);
       return res.status(200).json(deleted);
     } catch (err) {
       return res.status(400).json("could not delete category");
